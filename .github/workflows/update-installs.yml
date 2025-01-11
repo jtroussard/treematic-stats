@@ -26,7 +26,7 @@ jobs:
         id: check_update
         run: |
           LATEST_INSTALLED=$(curl -s https://raw.githubusercontent.com/jtroussard/treematic-stats/main/data.json | jq -r '.[-1].installs')
-          CURRENT_INSTALLED=$(python fetch_installs.py --check-only)
+          CURRENT_INSTALLED=$(python run.py --check-only)
           
           echo "Latest Install Count: $LATEST_INSTALLED"
           echo "Current Install Count: $CURRENT_INSTALLED"
