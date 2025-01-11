@@ -1,0 +1,55 @@
+name: Update Treematic Installs Data
+
+on:
+  schedule:
+    - cron: "0 22 * * *"  # Runs daily at 5 PM EST (10 PM UTC)
+  workflow_dispatch:       # Manual trigger
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Check for Install Updates
+        id: check_update
+        run: |
+          LATEST_INSTALLED=$(curl -s https://raw.githubusercontent.com/jtroussard/treematic-stats/main/data.json | jq -r '.[-1].installs')
+          CURRENT_INSTALLED=$(python fetch_installs.py --check-only)
+          
+          echo "Latest Install Count: $LATEST_INSTALLED"
+          echo "Current Install Count: $CURRENT_INSTALLED"
+
+          if [ "$LATEST_INSTALLED" -eq "$CURRENT_INSTALLED" ]; then
+            echo "No new installs. Skipping update."
+            echo "update_needed=false" >> $GITHUB_ENV
+          else
+            echo "New installs detected. Proceeding with update."
+            echo "update_needed=true" >> $GITHUB_ENV
+          fi
+
+      - name: Run Update Script
+        if: env.update_needed == 'true'
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python fetch_installs.py
+
+      - name: Commit and Push Changes
+        if: env.update_needed == 'true'
+        run: |
+          git config user.name "Jacques Troussard"
+          git config user.email "jacques.troussard@gmail.com"
+          git add data.json
+          git commit -m "Update Treematic Installs Data"
+          git push
