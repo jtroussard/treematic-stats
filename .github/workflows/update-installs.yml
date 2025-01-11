@@ -43,7 +43,7 @@ jobs:
         if: env.update_needed == 'true'
         env:
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: python fetch_installs.py
+        run: python run.py
 
       - name: Commit and Push Changes
         if: env.update_needed == 'true'
