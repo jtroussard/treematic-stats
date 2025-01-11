@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Treematic Installs</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <canvas id="installChart"></canvas>
+    <script>
+        fetch('https://raw.githubusercontent.com/jtroussard/treematic-stats/main/data.json')
+            .then(response => response.json())
+            .then(data => {
+                const ctx = document.getElementById('installChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: [data.date],
+                        datasets: [{
+                            label: 'Installs',
+                            data: [parseInt(data.installs.replace(/,/g, ''))],
+                            borderColor: 'blue',
+                            fill: false
+                        }]
+                    }
+                });
+            });
+    </script>
+</body>
+</html>
