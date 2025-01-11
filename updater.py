@@ -45,6 +45,7 @@ def update_installs_data(date, installs):
             print(f"Error fetching {file_path} from GitHub: {e}")
             data = []
 
+    
     # Append the new data entry
     new_entry = {
         "date": date,
