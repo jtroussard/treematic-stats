@@ -1,8 +1,12 @@
 import os
 import json
 from github import Github
+from backup import backup_data_file
 
 def update_installs_data(date, installs):
+    # Backup data.json
+    backup_data_file()
+
     # Determine the environment: LOCAL or PROD
     environment = os.getenv("ENVIRONMENT", "LOCAL").upper()
 
