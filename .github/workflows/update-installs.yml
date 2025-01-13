@@ -34,9 +34,11 @@ jobs:
           if [ "$LATEST_INSTALLED" -eq "$CURRENT_INSTALLED" ]; then
             echo "No new installs. Skipping update."
             echo "update_needed=false" >> $GITHUB_ENV
+            echo "$(date -u) UTC - No new installs detected." >> logs/update_log.txt
           else
             echo "New installs detected. Proceeding with update."
             echo "update_needed=true" >> $GITHUB_ENV
+            echo "$(date -u) UTC - New installs detected. Updating data." >> logs/update_log.txt
           fi
 
       - name: Run Update Script
@@ -45,11 +47,19 @@ jobs:
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python run.py
 
-      - name: Commit and Push Changes
+      - name: Commit and Push Data Changes
         if: env.update_needed == 'true'
         run: |
           git config user.name "Jacques Troussard"
           git config user.email "jacques.troussard@gmail.com"
           git add data.json
           git commit -m "Update Treematic Installs Data"
+          git push
+
+      - name: Commit and Push Log Updates
+        run: |
+          git config user.name "Jacques Troussard"
+          git config user.email "jacques.troussard@gmail.com"
+          git add logs/update_log.txt
+          git commit -m "Log update: $(date -u +"%Y-%m-%d %H:%M:%S")"
           git push
