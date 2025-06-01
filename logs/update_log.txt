@@ -113,3 +113,4 @@ Sun May 25 22:01:32 UTC 2025 UTC - New installs detected. Updating data.
 Mon May 26 22:01:35 UTC 2025 UTC - New installs detected. Updating data.
 Thu May 29 22:01:37 UTC 2025 UTC - New installs detected. Updating data.
 Sat May 31 22:01:41 UTC 2025 UTC - New installs detected. Updating data.
+Sun Jun  1 22:01:44 UTC 2025 UTC - New installs detected. Updating data.
