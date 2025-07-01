@@ -2,8 +2,8 @@ name: Update Treematic Installs Data
 
 on:
   schedule:
-    - cron: "0 22 * * *"  # Daily at 5 PM EST (10 PM UTC)
-  workflow_dispatch:        # Manual trigger
+    - cron: "0 22 * * *"  # Daily at 5 PM EST
+  workflow_dispatch:       
 
 jobs:
   update-data:
@@ -22,20 +22,7 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      - name: 80 perct Random Run Gate
-        id: random_gate
-        run: |
-          VALUE=$((RANDOM % 10))
-          if [ "$VALUE" -lt 2 ]; then
-            echo "🎲 Skipping today's run (VALUE=$VALUE)"
-            echo "run_today=false" >> $GITHUB_ENV
-          else
-            echo "🎯 Proceeding with today's run (VALUE=$VALUE)"
-            echo "run_today=true" >> $GITHUB_ENV
-          fi
-
       - name: Check for Install Updates
-        if: env.run_today == 'true'
         id: check_update
         run: |
           LATEST_INSTALLED=$(curl -s https://raw.githubusercontent.com/jtroussard/treematic-stats/main/data.json | jq -r '.[-1].installs')
@@ -70,7 +57,6 @@ jobs:
           git push
 
       - name: Commit and Push Log Updates
-        if: env.run_today == 'true'
         run: |
           git config user.name "Jacques Troussard"
           git config user.email "jacques.troussard@gmail.com"
