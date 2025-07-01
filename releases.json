@@ -1,0 +1,67 @@
+[
+  {
+    "date": "2025-01-20",
+    "version": "v2.0.4",
+    "commit": "6b01d44"
+  },
+  {
+    "date": "2025-01-13",
+    "version": "v2.0.3",
+    "commit": "dab7246"
+  },
+  {
+    "date": "2025-01-13",
+    "version": "v2.0.2",
+    "commit": "2feb05b"
+  },
+  {
+    "date": "2024-12-30",
+    "version": "v2.0.1",
+    "commit": "a51c15f"
+  },
+  {
+    "date": "2024-12-06",
+    "version": "v2.0.0",
+    "commit": "bd01d74"
+  },
+  {
+    "date": "2024-04-04",
+    "version": "v1.6.3",
+    "commit": "09e1e4a"
+  },
+  {
+    "date": "2024-03-06",
+    "version": "v1.6.2",
+    "commit": "6727f99"
+  },
+  {
+    "date": "2024-03-03",
+    "version": "v1.5.0",
+    "commit": "9c250ed"
+  },
+  {
+    "date": "2024-03-03",
+    "version": "v1.2.0",
+    "commit": "2c02e48"
+  },
+  {
+    "date": "2023-08-21",
+    "version": "v1.0.0",
+    "commit": "eb60eb1"
+  },
+  {
+    "date": "2023-08-20",
+    "version": "v0.0.3",
+    "commit": "e7d6328"
+  },
+  {
+    "date": "2023-08-20",
+    "version": "v0.0.2",
+    "commit": "0bd8a8a"
+  },
+  {
+    "date": "2023-08-20",
+    "version": "v0.0.1",
+    "commit": "fd85a16"
+  }
+]
