@@ -39,18 +39,53 @@ fetch('https://raw.githubusercontent.com/jtroussard/treematic-stats/main/data.js
         document.getElementById('totalInstalls').textContent = installs[installs.length - 1];
         document.getElementById('firstDate').textContent = labels[0];
         document.getElementById('lastDate').textContent = labels[labels.length - 1];
-        document.getElementById('maxDelta').textContent = Math.max(...dailyChanges);
 
-        // Populate table
+        const avgDelta = (
+            dailyChanges.reduce((sum, val) => sum + val, 0) / dailyChanges.length
+        ).toFixed(1);
+
+        document.getElementById('avgDelta').textContent = avgDelta;
+
+        // Filter deltas: ignore if the 7 days before had all 0s
+        const validDeltas = [];
+
+        for (let i = 7; i < dailyChanges.length; i++) {
+            const delta = dailyChanges[i];
+
+            // Skip non-positive changes
+            if (delta <= 0) continue;
+
+            const pastWeek = dailyChanges.slice(i - 7, i);
+            const allZeros = pastWeek.every(val => val === 0);
+
+            if (!allZeros && !validDeltas.some(entry => entry.delta === delta)) {
+                validDeltas.push({ delta, index: i });
+            }
+        }
+
+        // Sort by delta descending
+        validDeltas.sort((a, b) => b.delta - a.delta);
+
+        // Apply to DOM
+        document.getElementById('maxDelta1').textContent = validDeltas[0]?.delta ?? '—';
+        document.getElementById('maxDelta2').textContent = validDeltas[1]?.delta ?? '—';
+        document.getElementById('maxDelta3').textContent = validDeltas[2]?.delta ?? '—';
+
+        const format = (entry) => filledData[entry.index]?.date ?? 'N/A';
+        console.log('Top Install Dates:', format(validDeltas[0]), format(validDeltas[1]), format(validDeltas[2]));
+
+        // Populate table (omit 0-delta rows)
         const tableBody = document.getElementById('dataTable');
         filledData.forEach((entry, i) => {
             const delta = i === 0 ? 0 : installs[i] - installs[i - 1];
+            if (delta === 0) return; // Skip no-change days
+
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td>${entry.date}</td>
-                <td>${entry.installs}</td>
-                <td>${delta}</td>
-            `;
+        <td>${entry.date}</td>
+        <td>${entry.installs}</td>
+        <td>${delta}</td>
+    `;
             tableBody.appendChild(row);
         });
 
@@ -141,6 +176,21 @@ function loadAndRenderReleaseChart() {
             }
             if (otherSum > 0) grouped["Other"] = otherSum;
 
+            // Precompute averages per day while building versionBuckets
+            const versionAveragesMap = {};  // version => avg/day
+
+            for (let i = 0; i < releases.length; i++) {
+                const version = releases[i].version;
+                const startDate = new Date(releases[i].date);
+                const endDate = releases[i + 1]
+                    ? new Date(releases[i + 1].date)
+                    : new Date(filledData[filledData.length - 1].date);
+
+                const daysActive = Math.max(1, Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)));
+                const totalInstalls = versionBuckets[version] || 0;
+                versionAveragesMap[version] = +(totalInstalls / daysActive).toFixed(2);
+            }
+
             // Render Pie Chart
             const pieCtx = document.getElementById('releasePieChart').getContext('2d');
             new Chart(pieCtx, {
@@ -166,12 +216,20 @@ function loadAndRenderReleaseChart() {
                         tooltip: {
                             callbacks: {
                                 label: (context) => {
-                                    const val = context.raw;
-                                    const pct = ((val / total) * 100).toFixed(1);
-                                    return `${context.label}: ${val} installs (${pct}%)`;
+                                    const version = context.label;
+                                    const count = context.raw;
+                                    const totalForPie = Object.values(grouped).reduce((sum, val) => sum + val, 0);
+                                    const pct = ((count / totalForPie) * 100).toFixed(1);
+                                    const avg = versionAveragesMap[version] || 0;
+
+                                    return [
+                                        `  ${count} installs (${pct}%)`,
+                                        `  Avg: ${avg} installs/day`
+                                    ];
                                 }
                             }
                         }
+
                     }
                 }
             });
