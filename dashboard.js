@@ -46,6 +46,11 @@ fetch('https://raw.githubusercontent.com/jtroussard/treematic-stats/main/data.js
 
         document.getElementById('avgDelta').textContent = avgDelta;
 
+        // Most recent delta value
+        const mostRecentDelta = dailyChanges[dailyChanges.length - 1];
+        document.getElementById('maxDelta4').textContent = mostRecentDelta > 0 ? mostRecentDelta : '—';
+
+
         // Filter deltas: ignore if the 7 days before had all 0s
         const validDeltas = [];
 
@@ -101,18 +106,61 @@ fetch('https://raw.githubusercontent.com/jtroussard/treematic-stats/main/data.js
                     borderColor: 'blue',
                     backgroundColor: 'rgba(0, 0, 255, 0.1)',
                     borderWidth: 2,
-                    tension: 0.3,
-                    fill: true
+                    tension: 0.1,
+                    fill: true,
+                    pointRadius: 0, // hide dots
+                    pointHoverRadius: 4 // optional hover interactivity
                 }]
             },
             options: {
+                responsive: true,
+                animation: {
+                    duration: 800,
+                    easing: 'easeOutQuart'
+                },
                 scales: {
                     x: {
-                        title: { display: true, text: 'Date' }
+                        type: 'time',
+                        time: {
+                            unit: 'month'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Date'
+                        },
+                        grid: {
+                            drawOnChartArea: false
+                        }
                     },
                     y: {
                         beginAtZero: true,
-                        title: { display: true, text: 'Number of Installs' }
+                        title: {
+                            display: true,
+                            text: 'Number of Installs'
+                        },
+                        ticks: {
+                            precision: 0
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    },
+                    tooltip: {
+                        intersect: false,
+                        mode: 'index',
+                        callbacks: {
+                            title: (tooltipItems) => {
+                                const date = new Date(tooltipItems[0].parsed.x);
+                                return date.toLocaleDateString('en-US', {
+                                    year: 'numeric',
+                                    month: 'short',
+                                    day: 'numeric'
+                                }); // → "Jul 3, 2025"
+                            }
+                        }
                     }
                 }
             }
