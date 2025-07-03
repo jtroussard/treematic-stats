@@ -3,7 +3,7 @@ name: Update Treematic Installs Data
 on:
   schedule:
     # - cron: "0 22 * * *"  # Daily at 5 PM EST
-    - cron: "0 21 * * *"  # Daily at 5 PM EDT
+    - cron: "23 21 * * *"  # Daily at 5 PM EDT
   workflow_dispatch:       
 
 jobs:

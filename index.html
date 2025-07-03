@@ -5,8 +5,10 @@
     <meta charset="UTF-8">
     <title>Treematic Statistics</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="./style.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
 </head>
 
@@ -14,8 +16,31 @@
     <div class="container my-5">
 
         <div class="text-center mb-4">
-            <h1 class="display-4">Treematic Statistics</h1>
-            <h2 class="h4">Daily Extension Installs</h2>
+            <h1 class="display-4">Treematic By The Numbers</h1>
+        </div>
+
+        <div class="card mb-4 shadow-sm text-center mt-3 cta-card">
+            <div class="card-body">
+<h5 class="card-title mb-4">Visualize Your Project Tree</h5>
+<p class="card-text text-justify p-3">
+    TreeMatic is a VS Code extension that turns your file tree into a clean, minimal, interactive graph.  
+    It’s built for developers who care about clarity, structure, and improving the delivery of information.  
+    Whether you're documenting or discussing, TreeMatic adds value, especially when conducting structural analysis or working with LLMs that benefit from clearer project context.
+</p>
+
+
+
+<a href="https://marketplace.visualstudio.com/items?itemName=DevLife4Me.tree-meh"
+   class="btn btn-primary">
+    <i class="bi bi-box-arrow-up-right me-2"></i>
+    Install from VSCode Marketplace
+</a>
+
+            </div>
+        </div>
+
+        <div class="text-center mb-4">
+            <h2 class="h4">Daily Extension Install KPIs</h2>
         </div>
 
         <!-- KPI Cards -->
@@ -48,20 +73,20 @@
                 </div>
             </div>
             <div class="col-md-3">
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <i class="bi bi-speedometer2 fs-1 text-primary mb-2"></i>
-            <h5 class="card-title">Avg Daily Growth</h5>
-            <p class="fs-4 mb-0" id="avgDelta">—</p>
-        </div>
-    </div>
-</div>
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <i class="bi bi-speedometer2 fs-1 text-primary mb-2"></i>
+                        <h5 class="card-title">Avg Daily Growth</h5>
+                        <p class="fs-4 mb-0" id="avgDelta">—</p>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- 1st/2nd/3rd -->
-         <div class="text-center mb-4">
-            <h3 class="h4">Top Three Download Days</h3>
-         </div>
+        <div class="text-center mb-4">
+            <h3 class="h4">Daily Install Records</h3>
+        </div>
         <div class="row text-center justify-content-center g-3 mb-5">
             <div class="col-md-3">
                 <div class="card shadow-sm">
@@ -90,9 +115,21 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <i class="bi bi-activity"></i>
+                        <h5 class="card-title">Last recorded</h5>
+                        <p class="fs-4 mb-0" id="maxDelta4">—</p>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Chart -->
+        <div class="text-center mb-4">
+            <h3 class="h4">Installs Over Time</h3>
+        </div>
         <div class="card mb-5 shadow-sm">
             <div class="card-body">
                 <canvas id="installChart"></canvas>
@@ -109,7 +146,7 @@
             </div>
         </div>
 
-        
+
 
 
         <!-- Table -->
