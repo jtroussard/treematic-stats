@@ -21,20 +21,22 @@
 
         <div class="card mb-4 shadow-sm text-center mt-3 cta-card">
             <div class="card-body">
-<h5 class="card-title mb-4">Visualize Your Project Tree</h5>
-<p class="card-text text-justify p-3">
-    TreeMatic is a VS Code extension that turns your file tree into a clean, minimal, interactive graph.  
-    It’s built for developers who care about clarity, structure, and improving the delivery of information.  
-    Whether you're documenting or discussing, TreeMatic adds value, especially when conducting structural analysis or working with LLMs that benefit from clearer project context.
-</p>
+                <h5 class="card-title mb-4">Visualize Your Project Tree</h5>
+                <p class="card-text text-justify p-3">
+                    TreeMatic is a VS Code extension that turns your file tree into a clean, minimal, interactive graph.
+                    It’s built for developers who care about clarity, structure, and improving the delivery of
+                    information.
+                    Whether you're documenting or discussing, TreeMatic adds value, especially when conducting
+                    structural analysis or working with LLMs that benefit from clearer project context.
+                </p>
 
 
 
-<a href="https://marketplace.visualstudio.com/items?itemName=DevLife4Me.tree-meh"
-   class="btn btn-primary">
-    <i class="bi bi-box-arrow-up-right me-2"></i>
-    Install from VSCode Marketplace
-</a>
+                <a href="https://marketplace.visualstudio.com/items?itemName=DevLife4Me.tree-meh"
+                    class="btn btn-primary">
+                    <i class="bi bi-box-arrow-up-right me-2"></i>
+                    Install from VSCode Marketplace
+                </a>
 
             </div>
         </div>
@@ -123,6 +125,16 @@
                         <p class="fs-4 mb-0" id="maxDelta4">—</p>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Chart Controlls -->
+        <div class="text-center mb-3">
+            <div class="btn-group" role="group" aria-label="Date Range">
+                <button class="btn btn-outline-primary" onclick="setDateRange('week')">Last Week</button>
+                <button class="btn btn-outline-primary" onclick="setDateRange('quarter')">Last Quarter</button>
+                <button class="btn btn-outline-primary" onclick="setDateRange('ytd')">YTD</button>
+                <button class="btn btn-outline-primary" onclick="setDateRange('all')">All Time</button>
             </div>
         </div>
 
