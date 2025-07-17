@@ -172,8 +172,20 @@ fetch('https://raw.githubusercontent.com/jtroussard/treematic-stats/main/data.js
     })
     .catch(err => console.error("Data loading error:", err));
 
-function setDateRange(range) {
+
+window.setDateRange = function (range) {
     if (!filledData.length || !window.installChart) return;
+
+    // Update button styles
+    document.querySelectorAll('#rangeButtons button').forEach(btn => {
+        if (btn.dataset.range === range) {
+            btn.classList.remove('btn-outline-primary');
+            btn.classList.add('btn-primary');
+        } else {
+            btn.classList.remove('btn-primary');
+            btn.classList.add('btn-outline-primary');
+        }
+    });
 
     const now = new Date();
     let fromDate;
