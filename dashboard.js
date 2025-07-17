@@ -96,7 +96,7 @@ fetch('https://raw.githubusercontent.com/jtroussard/treematic-stats/main/data.js
 
         // Render line chart
         const ctx = document.getElementById('installChart').getContext('2d');
-        new Chart(ctx, {
+        window.installChart = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: labels,
@@ -171,6 +171,40 @@ fetch('https://raw.githubusercontent.com/jtroussard/treematic-stats/main/data.js
 
     })
     .catch(err => console.error("Data loading error:", err));
+
+function setDateRange(range) {
+    if (!filledData.length || !window.installChart) return;
+
+    const now = new Date();
+    let fromDate;
+
+    switch (range) {
+        case 'week':
+            fromDate = new Date(now);
+            fromDate.setDate(fromDate.getDate() - 7);
+            break;
+        case 'quarter':
+            fromDate = new Date(now);
+            fromDate.setMonth(fromDate.getMonth() - 3);
+            break;
+        case 'ytd':
+            fromDate = new Date(now.getFullYear(), 0, 1);
+            break;
+        case 'all':
+        default:
+            fromDate = new Date(filledData[0].date);
+            break;
+    }
+
+    const filtered = filledData.filter(entry => new Date(entry.date) >= fromDate);
+    const labels = filtered.map(entry => entry.date);
+    const installs = filtered.map(entry => entry.installs);
+
+    window.installChart.data.labels = labels;
+    window.installChart.data.datasets[0].data = installs;
+    window.installChart.update();
+}
+
 
 // Load and process release.json
 function loadAndRenderReleaseChart() {
